@@ -199,7 +199,7 @@ export const addLesson = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { slug } = req.params;
-    // console.log(slug);
+     console.log(slug);
     const course = await Course.findOne({ slug }).exec();
     // console.log("COURSE FOUND => ", course);
     if (req.user._id != course.instructor) {
