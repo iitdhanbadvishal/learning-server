@@ -199,7 +199,7 @@ export const addLesson = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { slug } = req.params;
-     console.log(slug);
+    //  console.log(slug);
     const course = await Course.findOne({ slug }).exec();
     // console.log("COURSE FOUND => ", course);
     if (req.user._id != course.instructor) {
@@ -215,4 +215,18 @@ export const update = async (req, res) => {
     console.log(err);
     return res.status(400).send(err.message);
   }
+};
+
+export const removeLesson = async (req, res) => {
+  const { slug, lessonId } = req.params;
+  const course = await Course.findOne({ slug }).exec();
+  if (req.user._id != course.instructor) {
+    return res.status(400).send("Unauthorized");
+  }
+
+  const deletedCourse = await Course.findByIdAndUpdate(course._id, {
+    $pull: { lessons: { _id: lessonId } },
+  }).exec();
+
+  res.json({ ok: true });
 };
