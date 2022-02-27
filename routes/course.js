@@ -4,7 +4,7 @@ import formidable from "express-formidable";
 const router = express.Router();
 
 // middleware
-import { requireSignin, isInstructor } from "../middlewares";
+import { requireSignin, isInstructor, isEnrolled } from "../middlewares";
 
 // controllers
 import {
@@ -23,6 +23,7 @@ import {
   courses,
   checkEnrollment,
   freeEnrollment,
+  userCourses,
 } from "../controllers/course";
 
 
@@ -45,6 +46,8 @@ router.get("/check-enrollment/:courseId", requireSignin, checkEnrollment);
 
 // enrollment
 router.post("/free-enrollment/:courseId", requireSignin, freeEnrollment);
+router.get("/user-courses", requireSignin, userCourses);
+router.get("/user/course/:slug", requireSignin, isEnrolled, read);
 
 
 module.exports = router;
